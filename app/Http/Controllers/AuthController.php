@@ -124,7 +124,7 @@ class AuthController extends Controller
         }
 
         $user = $request->user();
-        $tokenResult = $user->createToken('BFP Personal Access Client Personal Access Token');
+        $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         
         if($token->save()) {
