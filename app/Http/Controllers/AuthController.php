@@ -125,8 +125,9 @@ class AuthController extends Controller
 
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
-        $token = $tokenResult->token;
         return 'asd';
+        $token = $tokenResult->token;
+        
         if($token->save()) {
             return response()->json([
                 'access_token' => $tokenResult->accessToken,
