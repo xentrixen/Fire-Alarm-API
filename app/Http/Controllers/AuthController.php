@@ -122,8 +122,12 @@ class AuthController extends Controller
             $credentials['deleted_at'] = null;
         }
 
-        if(!Auth::guard($request->type)->attempt($credentials)) {
-            return response()->json(['message' => 'Your credesntials are incorrect. Please try again'], 401);
+        try{
+            if(!Auth::guard($request->type)->attempt($credentials)) {
+                return response()->json(['message' => 'Your credesntials are incorrect. Please try again'], 401);
+            }
+        } catch(\Exception $e) {
+            return $e->getMessage();            
         }
 
         $user = $request->user();
