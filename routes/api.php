@@ -25,7 +25,7 @@ Route::group([
     Route::get('verify/{token}', 'AuthController@verify');
   
     Route::group([
-      'middleware' => 'auth:admin'
+      'middleware' => 'auth:user'
     ], function() {
         Route::post('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
