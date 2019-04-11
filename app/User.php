@@ -13,6 +13,8 @@ class User extends Authenticatable
 {
     use Notifiable, HasApiTokens, SoftDeletes;
 
+    protected $guard = 'user';
+
     protected $dates = ['deleted_at'];
 
     /**

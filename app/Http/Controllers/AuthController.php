@@ -108,7 +108,8 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'type' => 'required|in:admin,user'
         ]);
 
         if(!$validator->passes()) {
@@ -116,10 +117,12 @@ class AuthController extends Controller
         }
 
         $credentials = request(['email', 'password']);
-        $credentials['active'] = 1;
-        $credentials['deleted_at'] = null;
+        if($request->type == 'user') {
+            $credentials['active'] = 1;
+            $credentials['deleted_at'] = null;
+        }
 
-        if(!Auth::attempt($credentials)) {
+        if(!Auth::guard($request->type)->attempt($credentials)) {
             return response()->json(['message' => 'Your credentials are incorrect. Please try again'], 401);
         }
 
