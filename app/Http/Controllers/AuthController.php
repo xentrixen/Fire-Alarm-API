@@ -128,8 +128,8 @@ class AuthController extends Controller
 
         if($user) {
             if(bcrpyt($request->password) != $user->password) {
-                Auth::login($user);
                 return 'asd';
+                Auth::login($user);
             } else {
                 return response()->json(['message' => 'Your 2 are incorrect. Please try again'], 401);
             }
