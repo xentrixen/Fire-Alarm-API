@@ -6,14 +6,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-use Laravel\Passport\HasApiTokens;
+use SMartins\PassportMultiauth\HasMultiAuthApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Hash;
 
-class User extends Authenticatable
+class Citizen extends Authenticatable
 {
-    use Notifiable, HasApiTokens, SoftDeletes;
-
-    protected $guard = 'user';
+    use Notifiable, HasMultiAuthApiTokens, SoftDeletes;
 
     protected $dates = ['deleted_at'];
 
@@ -43,4 +42,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    public function validateForPassportPasswordGrant($password)
+    {
+        if($this->active) {
+            return Hash::check($password, $this->getAuthPassword());
+        } else {
+            return false;
+        }
+    }
 }

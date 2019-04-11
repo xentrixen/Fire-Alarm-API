@@ -24,10 +24,21 @@ Route::group([
     Route::post('signup', 'AuthController@signup');
     Route::get('verify/{token}', 'AuthController@verify');
   
-    Route::group([
-      'middleware' => 'auth:user'
-    ], function() {
+    // Route::group([
+    //   'middleware' => 'auth:user'
+    // ], function() {
+    //     Route::post('logout', 'AuthController@logout');
+    //     Route::get('user', 'AuthController@user');
+    // });
+
+    Route::group(['middleware' => ['api', 'multiauth:admin,citizen']], function () {
         Route::post('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
     });
+});
+
+Route::group(['middleware' => ['api', 'multiauth:admin']], function () {
+    Route::resource('citizens', 'CitizenController')->only(['index', 'destroy']);
+    Route::resource('login-histories', 'LoginHistoryController')->only(['index']);
+    Route::apiResource('fire-stations', 'FireStationController');
 });

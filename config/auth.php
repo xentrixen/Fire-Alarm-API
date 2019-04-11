@@ -49,12 +49,12 @@ return [
 
         'admin' => [
             'driver' => 'passport',
-            'provider' => 'admins',
+            'provider' => 'admin',
         ],
 
-        'user' => [
+        'citizen' => [
             'driver' => 'passport',
-            'provider' => 'users',
+            'provider' => 'citizen',
         ],
     ],
 
@@ -86,9 +86,14 @@ return [
         //     'table' => 'users',
         // ],
 
-        'admins' => [
+        'admin' => [
             'driver' => 'eloquent',
             'model' => App\Admin::class,
+        ],
+
+        'citizen' => [
+            'driver' => 'eloquent',
+            'model' => App\Citizen::class,
         ],
     ],
 

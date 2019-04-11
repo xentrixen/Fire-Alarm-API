@@ -5,13 +5,11 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-use Laravel\Passport\HasApiTokens;
+use SMartins\PassportMultiauth\HasMultiAuthApiTokens;
 
 class Admin extends Authenticatable
 {
-    use HasApiTokens;
-
-    protected $guard = 'admin';
+    use HasMultiAuthApiTokens;
 
     /**
      * The attributes that are mass assignable.

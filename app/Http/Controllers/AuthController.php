@@ -5,9 +5,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use Carbon\Carbon;
-use App\User;
+use App\Citizen;
 use App\Admin;
 use App\Notifications\Verify;
+use Illuminate\Support\Facades\Hash;
+use App\LoginHistory;
 use DB;
 use Validator;
 
@@ -31,7 +33,7 @@ class AuthController extends Controller
                 'string',
                 'email',
                 function ($attribute, $value, $fail) {
-                    if(User::where('email', $value)->where('active', 1)->count() > 0) {
+                    if(Citizen::where('email', $value)->where('active', 1)->count() > 0) {
                         $fail('The email has already been taken.');
                     }
                 }
@@ -39,25 +41,25 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed'
         ]);
 
-        $user = User::where('email', $request->email)->first();
-        if(!$user) {
-            $user = new User([
+        $citizen = Citizen::where('email', $request->email)->first();
+        if(!$citizen) {
+            $citizen = new Citizen([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => bcrypt($request->password),
+                'password' => Hash::make($request->password),
                 'activation_token' => str_random(60)
             ]);
         } else {
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->password = bcrypt($request->password);
-            $user->activation_token = str_random(60);
+            $citizen->name = $request->name;
+            $citizen->email = $request->email;
+            $citizen->password = Hash::make($request->password);
+            $citizen->activation_token = str_random(60);
         }
         
         DB::beginTransaction();
         try {
-            $user->save();
-            $user->notify(new Verify($user));
+            $citizen->save();
+            $citizen->notify(new Verify($citizen));
 
             DB::commit();
             return response()->json(['message' => 'Please verify your account by email to continue']);
@@ -69,8 +71,8 @@ class AuthController extends Controller
 
     public function verify($token)
     {
-        $user = User::where('activation_token', $token)->first();
-        if (!$user) {
+        $citizen = Citizen::where('activation_token', $token)->first();
+        if (!$citizen) {
             if(!request()->expectsJson()) {
                 return view('verify', [
                     'status' => 'Error',
@@ -80,10 +82,10 @@ class AuthController extends Controller
             return response()->json(['message' => 'This activation token is invalid.'], 404);
         }
 
-        $user->active = true;
-        $user->activation_token = '';
+        $citizen->active = true;
+        $citizen->activation_token = '';
 
-        if($user->save()) {
+        if($citizen->save()) {
             if(!request()->expectsJson()) {
                 return view('verify', [
                     'status' => 'Success',
@@ -108,49 +110,57 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-            'type' => 'required|in:admin,user'
+            'type' => 'required|in:admin,citizen'
         ]);
 
         if(!$validator->passes()) {
-            return response()->json(['message' => 'Your credentials are incorrect. Please try again'], 401);
-        }
-
-        if($request->type == 'user') {
-            $user = User::where('email', $request->email)
-                ->where('active', 1)
-                ->where('deleted_at', null)
-                ->first();
-                
-        } else if($request->type == 'admin') {
-            $user = Admin::where('email', $request->email)->first();
-        }
-
-        if($user) {
-            if(bcrypt($request->password) != $user->password) {
-                Auth::login($user);
-            } else {
-                return response()->json(['message' => 'Your 2 are incorrect. Please try again'], 401);
-            }
-        } else {
-            return response()->json(['message' => 'Your 1 are incorrect. Please try again'], 401);
-        }
-
-        $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
-        $token = $tokenResult->token;
-        
-        if($token->save()) {
             return response()->json([
-                'access_token' => $tokenResult->accessToken,
-                'token_type' => 'Bearer',
-                'expires_at' => Carbon::parse(
-                    $tokenResult->token->expires_at
-                )->toDateTimeString()
-            ]);
+                'message' => 'The given data was invalid.',
+                'errors' => $validator->errors()
+            ], 422);
         }
-        return response()->json(['message' => 'An error has occurred'], 500);
+
+        $http = new \GuzzleHttp\Client;
+
+        try {
+            $response = $http->post(env('PASSPORT_LOGIN_ENDPOINT'), [
+                'form_params' => [
+                    'grant_type' => 'password',
+                    'client_id' => env('PASSPORT_CLIENT_ID'),
+                    'client_secret' => env('PASSPORT_CLIENT_SECRET'),
+                    'username' => $request->email,
+                    'password' => $request->password,
+                    'provider' => $request->type
+                ]
+            ]);
+
+            $response =  $response->getBody();
+
+            if($request->type == 'citizen') {
+                $access_token = json_decode($response, true)['access_token'];
+                $request = $http->get(env("APP_URL")."/auth/user", [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer '.$access_token,
+                    ]
+                ]);
+                
+                $id = json_decode($request->getBody(), true)['id'];
+                LoginHistory::create([
+                    'citizen_id' => $id
+                ]);
+            }
+
+            return $response;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+            if ($e->getCode() === 400) {
+                return response()->json(['message' => 'Invalid Request. Please enter a username or a password.'], $e->getCode());
+            } else if ($e->getCode() === 401) {
+                return response()->json(['message' => 'Your credentials are incorrect. Please try again'], $e->getCode());
+            }
+            
+            return response()->json(['message' => 'Something went wrong on the server.'], $e->getCode());
+        }
     }
   
     /**

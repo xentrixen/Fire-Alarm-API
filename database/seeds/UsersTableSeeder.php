@@ -3,7 +3,8 @@
 use Illuminate\Database\Seeder;
 
 use App\Admin;
-use App\User;
+use App\Citizen;
+use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -17,14 +18,14 @@ class UsersTableSeeder extends Seeder
         Admin::truncate();
         Admin::create([
             'email' => 'admin@test.com',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
         ]);
 
-        User::truncate();
-        User::create([
-            'name' => 'Charles Salinas',
-            'email' => 'salinasandrei45@gmail.com',
-            'password' => bcrypt('password'),
+        Citizen::truncate();
+        Citizen::create([
+            'name' => 'Jeric Cordova',
+            'email' => 'cordovajeric@gmail.com',
+            'password' => Hash::make('password'),
             'active' => true,
             'activation_token' => str_random(60)
         ]);
