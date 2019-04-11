@@ -126,8 +126,8 @@ class AuthController extends Controller
         } else if($request->type == 'admin') {
             $user = Admin::where('email', $request->email)->first();
         }
-        return 'assd';
         if($user) {
+            return 'assd';
             if(bcrpyt($request->password) != $user->password) {
                 
                 Auth::login($user);
