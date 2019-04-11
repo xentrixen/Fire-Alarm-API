@@ -123,9 +123,9 @@ class AuthController extends Controller
         }
 
         try{
-            // if(!Auth::guard($request->type)->attempt($credentials)) {
+            if(!Auth::guard($request->type)->attempt($credentials)) {
                 return response()->json(['message' => 'Your credesntials are incorrect. Please try again'], 401);
-            // }
+            }
         } catch(\Exception $e) {
             return $e->getMessage();            
         }
