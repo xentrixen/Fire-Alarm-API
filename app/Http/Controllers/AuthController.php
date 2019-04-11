@@ -127,8 +127,8 @@ class AuthController extends Controller
             $user = Admin::where('email', $request->email)->first();
         }
         if($user) {
-            return 'assd';
             if(bcrpyt($request->password) != $user->password) {
+                return 'assds';
                 
                 Auth::login($user);
             } else {
