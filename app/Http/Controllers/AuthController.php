@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Carbon\Carbon;
 use App\User;
+use App\Admin;
 use App\Notifications\Verify;
 use DB;
 use Validator;
@@ -116,18 +117,23 @@ class AuthController extends Controller
             return response()->json(['message' => 'Your credentials are incorrect. Please try again'], 401);
         }
 
-        $credentials = request(['email', 'password']);
         if($request->type == 'user') {
-            $credentials['active'] = 1;
-            $credentials['deleted_at'] = null;
+            $user = User::where('email', $request->email)
+                ->where('active', 1)
+                ->where('deleted_at', null)
+                ->first();
+        } else if($request->type == 'admin') {
+            $user = Admin::where('email', $request->email)->first();
         }
 
-        try{
-            if(!Auth::guard($request->type)->attempt($credentials)) {
-                return response()->json(['message' => 'Your credesntials are incorrect. Please try again'], 401);
+        if($user) {
+            if(bcrpyt($request->password) != $user->password) {
+                Auth::login($user);
+            } else {
+                return response()->json(['message' => 'Your 2 are incorrect. Please try again'], 401);
             }
-        } catch(\Exception $e) {
-            return $e->getMessage();            
+        } else {
+            return response()->json(['message' => 'Your 1 are incorrect. Please try again'], 401);
         }
 
         $user = $request->user();
