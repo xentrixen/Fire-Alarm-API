@@ -122,11 +122,11 @@ class AuthController extends Controller
                 ->where('active', 1)
                 ->where('deleted_at', null)
                 ->first();
-                return 'asd';
+                
         } else if($request->type == 'admin') {
             $user = Admin::where('email', $request->email)->first();
         }
-
+        return 'assd';
         if($user) {
             if(bcrpyt($request->password) != $user->password) {
                 
