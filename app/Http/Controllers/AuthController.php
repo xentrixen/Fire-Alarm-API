@@ -129,7 +129,7 @@ class AuthController extends Controller
 
         if($user) {
             if(bcrypt($request->password) != $user->password) {
-                Auth::guard($request->type)->login($user);
+                Auth::login($user);
             } else {
                 return response()->json(['message' => 'Your 2 are incorrect. Please try again'], 401);
             }
@@ -145,8 +145,8 @@ class AuthController extends Controller
             return response()->json([
                 'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
-                's' => Auth::guard('admin')->check(),
-                'ss' => Auth::guard('user')->check(),
+                's' => Auth::user() instanceof User,
+                'ss' => Auth::user() instanceof Admin,
                 'expires_at' => Carbon::parse(
                     $tokenResult->token->expires_at
                 )->toDateTimeString()
