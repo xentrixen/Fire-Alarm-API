@@ -118,6 +118,7 @@ class AuthController extends Controller
         }
 
         if($request->type == 'user') {
+            return 'asd';
             $user = User::where('email', $request->email)
                 ->where('active', 1)
                 ->where('deleted_at', null)
@@ -128,7 +129,7 @@ class AuthController extends Controller
 
         if($user) {
             if(bcrpyt($request->password) != $user->password) {
-                return 'asd';
+                
                 Auth::login($user);
             } else {
                 return response()->json(['message' => 'Your 2 are incorrect. Please try again'], 401);
