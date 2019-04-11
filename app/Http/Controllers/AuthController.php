@@ -123,7 +123,7 @@ class AuthController extends Controller
         }
 
         if(!Auth::guard($request->type)->attempt($credentials)) {
-            return response()->json(['message' => 'Your credentials are incorrect. Please try again'], 401);
+            return response()->json(['message' => 'Your credesntials are incorrect. Please try again'], 401);
         }
 
         $user = $request->user();
