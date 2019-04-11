@@ -113,7 +113,7 @@ class AuthController extends Controller
         ]);
 
         if(!$validator->passes()) {
-            return response()->json(['message' => 'Your credentials are incorrect. Please try again'], 401);
+            return response()->json(['message' => $validator->errors()], 401);
         }
 
         $credentials = request(['email', 'password']);
