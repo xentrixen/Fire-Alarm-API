@@ -126,9 +126,10 @@ class AuthController extends Controller
         } else if($request->type == 'admin') {
             $user = Admin::where('email', $request->email)->first();
         }
+
         if($user) {
             if(bcrypt($request->password) != $user->password) {
-                Auth::login($user);
+                Auth::guard($request->type)->login($user);
             } else {
                 return response()->json(['message' => 'Your 2 are incorrect. Please try again'], 401);
             }
