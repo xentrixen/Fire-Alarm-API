@@ -144,6 +144,8 @@ class AuthController extends Controller
             return response()->json([
                 'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
+                's' => Auth::guard('admin')->check(),
+                'ss' => Auth::guard('user')->check(),
                 'expires_at' => Carbon::parse(
                     $tokenResult->token->expires_at
                 )->toDateTimeString()
