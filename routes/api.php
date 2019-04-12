@@ -23,13 +23,6 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
     Route::get('verify/{token}', 'AuthController@verify');
-  
-    // Route::group([
-    //   'middleware' => 'auth:user'
-    // ], function() {
-    //     Route::post('logout', 'AuthController@logout');
-    //     Route::get('user', 'AuthController@user');
-    // });
 
     Route::group(['middleware' => ['api', 'multiauth:admin,citizen']], function () {
         Route::post('logout', 'AuthController@logout');
@@ -40,5 +33,9 @@ Route::group([
 Route::group(['middleware' => ['api', 'multiauth:admin']], function () {
     Route::resource('citizens', 'CitizenController')->only(['index', 'destroy']);
     Route::resource('login-histories', 'LoginHistoryController')->only(['index']);
-    Route::apiResource('fire-stations', 'FireStationController');
+    Route::resource('fire-stations', 'FireStationController')->except(['index']);
+});
+
+Route::group(['middleware' => ['api', 'multiauth:admin,citizen']], function () {
+    Route::resource('fire-stations', 'FireStationController')->only(['index']);
 });
