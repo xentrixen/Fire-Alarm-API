@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\FireReport;
 use Storage;
 use App\Http\Resources\FireReport as FireReportResource;
-// use Cloudinary\Uploader;
+use Cloudinary\Uploader;
 
 class FireReportController extends Controller
 {
@@ -37,7 +37,7 @@ class FireReportController extends Controller
         ]);
         
         $image = "data:image/png;base64,".$request->image;
-        $result = \Cloudinary\Uploader::upload($image);
+        $result = Uploader::upload($image);
 
         $fireReport = new FireReport();
         $fireReport->latitude = $request->latitude;
