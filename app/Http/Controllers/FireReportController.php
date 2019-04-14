@@ -35,6 +35,7 @@ class FireReportController extends Controller
         ]);
 
         $path = uniqid() + ".png";
+        return response()->json(['message' => 'Ok'], 200);
         $data = base64_decode($request->image);
         Storage::disk('local')->put($path, $data);
         return response()->json(['message' => 'Ok'], 200);
