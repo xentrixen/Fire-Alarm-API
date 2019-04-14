@@ -42,6 +42,6 @@ Route::group(['middleware' => ['api', 'multiauth:admin,citizen']], function () {
 });
 
 Route::group(['middleware' => ['api', 'multiauth:admin,fire-personnel']], function () {
-    Route::resource('fire-reports', 'FireReportController')->only(['index', 'show', 'destroy']);
+    Route::resource('fire-reports', 'FireReportController')->only(['index', 'show', 'update', 'destroy']);
     Route::resource('fire-hydrants', 'FireHydrantController')->only(['index']);
 });

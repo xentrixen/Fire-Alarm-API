@@ -11,7 +11,7 @@ class FireReport extends Model
     ];
 
     protected $fillable = [
-        'citizen_id', 'latitude', 'longitude', 'image'
+        'citizen_id', 'latitude', 'longitude', 'image', 'level_of_fire'
     ];
 
     protected $hidden = [

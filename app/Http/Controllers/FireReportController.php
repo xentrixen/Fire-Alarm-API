@@ -71,7 +71,22 @@ class FireReportController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $fireReport = FireReport::find($id);
 
+        if($fireReport) {
+            $request->validate([
+                'level_of_fire' => 'sometimes|required|in:First Alarm,Second Alarm,Third Alarm,General Alarm',
+            ]);
+
+            $fireReport->level_of_fire = $request->level_of_fire;
+
+            if($fireReport->save()) {
+                return response()->json(['message' => 'Fire report updated successfully'], 200);
+            }
+            return response()->json(['message' => 'An error has occurred'], 500);
+        } else {
+            return response()->json(['message' => 'Fire report not found'], 404);
+        }
     }
 
     /**
