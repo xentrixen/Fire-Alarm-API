@@ -17,7 +17,7 @@ class CreateFireReportsTable extends Migration
             $table->bigIncrements('id');
             $table->decimal('latitude', 9, 6);
             $table->decimal('longitude', 9, 6);
-            $table->text('image');
+            $table->longText('image');
             $table->unsignedBigInteger('citizen_id');
             $table->foreign('citizen_id')->references('id')->on('citizens');
             $table->timestamps();

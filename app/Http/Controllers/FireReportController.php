@@ -26,28 +26,23 @@ class FireReportController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        $request->validate([
+            'latitude' => 'required|numeric|min:-90|max:90',
+            'longitude' => 'required|numeric|min:-180|max:180',
+            'image' => 'required|string',
+            'citizen_id' => 'required|exists:citizens,id'
+        ]);
 
-            $request->validate([
-                'latitude' => 'required|numeric|min:-90|max:90',
-                'longitude' => 'required|numeric|min:-180|max:180',
-                'image' => 'required',
-                'citizen_id' => 'required|exists:citizens,id'
-            ]);
-    
-            $fireReport = new FireReport();
-            $fireReport->latitude = $request->latitude;
-            $fireReport->longitude = $request->longitude;
-            $fireReport->image = $request->image;
-            $fireReport->citizen_id = $request->citizen_id;
-    
-            if($fireReport->save()) {
-                return response()->json(['message' => 'Fire report created successfully'], 200);
-            }
-            return response()->json(['message' => 'An error has occurred'], 500);
-        } catch(\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        $fireReport = new FireReport();
+        $fireReport->latitude = $request->latitude;
+        $fireReport->longitude = $request->longitude;
+        $fireReport->image = $request->image;
+        $fireReport->citizen_id = $request->citizen_id;
+
+        if($fireReport->save()) {
+            return response()->json(['message' => 'Fire report created successfully'], 200);
         }
+        return response()->json(['message' => 'An error has occurred'], 500);
     }
 
     /**
