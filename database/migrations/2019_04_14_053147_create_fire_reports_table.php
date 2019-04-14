@@ -21,6 +21,7 @@ class CreateFireReportsTable extends Migration
             $table->unsignedBigInteger('citizen_id');
             $table->foreign('citizen_id')->references('id')->on('citizens');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
