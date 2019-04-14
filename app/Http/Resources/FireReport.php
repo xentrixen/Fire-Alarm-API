@@ -15,6 +15,7 @@ class FireReport extends JsonResource
     public function toArray($request)
     {
         $resource = parent::toArray($request);
+        $resource["level_of_fire"] = $this->level_of_fire != null ? $this->level_of_fire : '-';
         $resource["reporter_name"] = $this->citizen->name;
         $resource["reporter_email"] = $this->citizen->email;
         return $resource;
