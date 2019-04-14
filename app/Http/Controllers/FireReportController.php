@@ -41,7 +41,7 @@ class FireReportController extends Controller
         $fireReport = new FireReport();
         $fireReport->latitude = $request->latitude;
         $fireReport->longitude = $request->longitude;
-        $fireReport->image = $path;
+        $fireReport->image = storage_path($path);
         $fireReport->citizen_id = $request->citizen_id;
 
         if($fireReport->save()) {
