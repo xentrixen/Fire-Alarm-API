@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\FireReport;
+use App\Http\Resources\FireReport as FireReportResource;
 
 class FireReportController extends Controller
 {
@@ -15,7 +16,7 @@ class FireReportController extends Controller
      */
     public function index()
     {
-        return FireReport::all();
+        return FireReportResource::collection(FireReport::all());
     }
 
     /**
@@ -55,7 +56,7 @@ class FireReportController extends Controller
     {
         $fireReport = FireReport::find($id);
         if($fireReport) {
-            return FireReport::find($id);
+            return new FireReportResource(FireReport::find($id));
         } else {
             return response()->json(['message' => 'Fire report not found'], 404);
         }
