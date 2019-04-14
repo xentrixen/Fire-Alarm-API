@@ -30,6 +30,7 @@ Route::group(['middleware' => ['api', 'multiauth:admin']], function () {
     Route::resource('citizens', 'CitizenController')->only(['index', 'destroy']);
     Route::resource('login-histories', 'LoginHistoryController')->only(['index']);
     Route::resource('fire-stations', 'FireStationController')->except(['index']);
+    Route::resource('fire-hydrants', 'FireHydrantController')->except(['index']);
 });
 
 Route::group(['middleware' => ['api', 'multiauth:admin,citizen,fire-personnel']], function () {
@@ -42,4 +43,5 @@ Route::group(['middleware' => ['api', 'multiauth:admin,citizen']], function () {
 
 Route::group(['middleware' => ['api', 'multiauth:admin,fire-personnel']], function () {
     Route::resource('fire-reports', 'FireReportController')->only(['index', 'show', 'destroy']);
+    Route::resource('fire-hydrants', 'FireHydrantController')->only(['index']);
 });
