@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FireReport extends Model
 {
+    use SoftDeletes;
+
     protected $casts = [
         'created_at' => 'datetime:F j, Y g:i A',
     ];
