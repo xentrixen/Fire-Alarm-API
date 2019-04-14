@@ -15,6 +15,9 @@ class CreateFireHydrantsTable extends Migration
     {
         Schema::create('fire_hydrants', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name');
+            $table->decimal('latitude', 9, 6);
+            $table->decimal('longitude', 9, 6);
             $table->timestamps();
         });
     }
