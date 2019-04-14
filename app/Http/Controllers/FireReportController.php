@@ -37,6 +37,7 @@ class FireReportController extends Controller
         $path = uniqid() + ".png";
         $data = base64_decode($data);
         Storage::disk('local')->put($path, $data);
+        return response()->json(['message' => storage_path($path)], 200);
 
         $fireReport = new FireReport();
         $fireReport->latitude = $request->latitude;
