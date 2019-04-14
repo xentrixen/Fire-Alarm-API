@@ -34,10 +34,14 @@ class FireReportController extends Controller
             'citizen_id' => 'required|exists:citizens,id'
         ]);
 
+        $path = uniqid() + ".png";
+        $data = base64_decode($data);
+        Storage::disk('local')->put($path, $data);
+
         $fireReport = new FireReport();
         $fireReport->latitude = $request->latitude;
         $fireReport->longitude = $request->longitude;
-        $fireReport->image = $request->image;
+        $fireReport->image = $path;
         $fireReport->citizen_id = $request->citizen_id;
 
         if($fireReport->save()) {
