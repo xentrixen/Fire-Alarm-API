@@ -37,6 +37,7 @@ class FireReportController extends Controller
         ]);
         
         $data = "data:image/png;base64,".base64_decode($request->image);
+        return response()->json(['message' => $data], 200);
 
         $result = \Cloudinary\Uploader::upload($data);
 
