@@ -17,7 +17,7 @@ class CreateFireReportsTable extends Migration
             $table->bigIncrements('id');
             $table->decimal('latitude', 9, 6);
             $table->decimal('longitude', 9, 6);
-            $table->longText('image');
+            $table->string('image');
             $table->unsignedBigInteger('citizen_id');
             $table->enum('level_of_fire', ['First Alarm', 'Second Alarm', 'Third Alarm', 'General Alarm'])->nullable();
             $table->foreign('citizen_id')->references('id')->on('citizens');
