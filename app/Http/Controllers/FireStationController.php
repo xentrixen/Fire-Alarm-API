@@ -31,7 +31,7 @@ class FireStationController extends Controller
             'name' => 'required|string',
             'latitude' => 'required|numeric|min:-90|max:90',
             'longitude' => 'required|numeric|min:-180|max:180',
-            'username' => 'required|string',
+            'username' => 'required|string|unique:fire_stations',
             'password' => 'required|string|min:8|confirmed'
         ]);
 

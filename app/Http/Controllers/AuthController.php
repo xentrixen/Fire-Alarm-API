@@ -110,7 +110,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'type' => 'required|in:admin,citizen'
+            'type' => 'required|in:admin,citizen,fire-personnel'
         ]);
 
         if(!$validator->passes()) {
@@ -128,7 +128,7 @@ class AuthController extends Controller
                     'grant_type' => 'password',
                     'client_id' => env('PASSPORT_CLIENT_ID'),
                     'client_secret' => env('PASSPORT_CLIENT_SECRET'),
-                    'username' => $request->email,
+                    'username' => $request->type != 'fire-personnel' ? $request->email : $request->username,
                     'password' => $request->password,
                     'provider' => $request->type
                 ]
@@ -159,7 +159,7 @@ class AuthController extends Controller
                 return response()->json(['message' => 'Your credentials are incorrect. Please try again'], $e->getCode());
             }
             
-            return response()->json(['message' => 'Something went wrong on the server.'], $e->getCode());
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
     }
   

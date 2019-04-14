@@ -2,10 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class FireStation extends Model
+use SMartins\PassportMultiauth\HasMultiAuthApiTokens;
+
+class FireStation extends Authenticatable
 {
+    use HasMultiAuthApiTokens;
+
     protected $fillable = [
         'name', 'latitude', 'longitude', 'username', 'password'
     ];
@@ -13,4 +17,8 @@ class FireStation extends Model
     protected $hidden = [
         'password'
     ];
+
+    public function findForPassport($username) {
+        return $this->where('username', $username)->first();
+    }
 }

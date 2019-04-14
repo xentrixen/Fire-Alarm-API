@@ -56,6 +56,11 @@ return [
             'driver' => 'passport',
             'provider' => 'citizen',
         ],
+
+        'fire-personnel' => [
+            'driver' => 'passport',
+            'provider' => 'fire-personnel',
+        ],
     ],
 
     /*
@@ -94,6 +99,11 @@ return [
         'citizen' => [
             'driver' => 'eloquent',
             'model' => App\Citizen::class,
+        ],
+
+        'fire-personnel' => [
+            'driver' => 'eloquent',
+            'model' => App\FireStation::class,
         ],
     ],
 

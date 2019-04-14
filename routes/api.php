@@ -13,10 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::group([
     'prefix' => 'auth'
 ], function () {
@@ -24,7 +20,7 @@ Route::group([
     Route::post('signup', 'AuthController@signup');
     Route::get('verify/{token}', 'AuthController@verify');
 
-    Route::group(['middleware' => ['api', 'multiauth:admin,citizen']], function () {
+    Route::group(['middleware' => ['api', 'multiauth:admin,citizen,fire-personnel']], function () {
         Route::post('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
     });
