@@ -36,10 +36,8 @@ class FireReportController extends Controller
             'citizen_id' => 'required|exists:citizens,id'
         ]);
         
-        $data = "data:image/png;base64,".base64_decode($request->image);
-        return response()->json(['message' => $data], 200);
-
-        $result = \Cloudinary\Uploader::upload($data);
+        $image = "data:image/png;base64,".$request->image;
+        $result = \Cloudinary\Uploader::upload($image);
 
         $fireReport = new FireReport();
         $fireReport->latitude = $request->latitude;
