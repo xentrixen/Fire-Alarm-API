@@ -70,7 +70,7 @@ class FireReportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
@@ -81,6 +81,14 @@ class FireReportController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $fireReport = FireReport::find($id);
+        if($fireReport) {
+            if($fireReport->delete()) {
+                return response()->json(['message' => 'Fire report deleted successfully'], 200);
+            }
+            return response()->json(['message' => 'An error has occurred'], 500);
+        } else {
+            return response()->json(['message' => 'Fire report not found'], 404);
+        }
     }
 }

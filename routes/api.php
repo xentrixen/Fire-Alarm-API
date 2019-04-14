@@ -35,3 +35,11 @@ Route::group(['middleware' => ['api', 'multiauth:admin']], function () {
 Route::group(['middleware' => ['api', 'multiauth:admin,citizen,fire-personnel']], function () {
     Route::resource('fire-stations', 'FireStationController')->only(['index']);
 });
+
+Route::group(['middleware' => ['api', 'multiauth:admin,citizen']], function () {
+    Route::resource('fire-reports', 'FireReportController')->only(['store']);
+});
+
+Route::group(['middleware' => ['api', 'multiauth:admin,fire-personnel']], function () {
+    Route::resource('fire-reports', 'FireReportController')->only(['index', 'show', 'destroy']);
+});
