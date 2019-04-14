@@ -36,6 +36,7 @@ class FireReportController extends Controller
         
         $path = uniqid().".png";
         $data = base64_decode($request->image);
+        return response()->json(['message' => 'Fire report cs'], 200);
         Storage::disk('local')->put($path, $data);
 
         $fireReport = new FireReport();
