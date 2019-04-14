@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\FireReport;
 use Storage;
 use App\Http\Resources\FireReport as FireReportResource;
-// use Cloudder;
+use Cloudinary\Uploader;
 
 class FireReportController extends Controller
 {
@@ -36,13 +36,14 @@ class FireReportController extends Controller
             'citizen_id' => 'required|exists:citizens,id'
         ]);
         
-        $data = base64_decode($request->image);
-        \Cloudder::upload($data);
+        $data = "data:image/png;base64,".base64_decode($request->image);
+
+        $result = Uploader::upload($data);
 
         $fireReport = new FireReport();
         $fireReport->latitude = $request->latitude;
         $fireReport->longitude = $request->longitude;
-        $fireReport->image = \Cloudder::getResult()["url"];
+        $fireReport->image = $result["url"];
         $fireReport->citizen_id = $request->citizen_id;
 
         if($fireReport->save()) {
