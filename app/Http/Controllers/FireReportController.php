@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\FireReport;
+use Storage;
 use App\Http\Resources\FireReport as FireReportResource;
 
 class FireReportController extends Controller
