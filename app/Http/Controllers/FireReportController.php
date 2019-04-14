@@ -31,7 +31,7 @@ class FireReportController extends Controller
             $request->validate([
                 'latitude' => 'required|numeric|min:-90|max:90',
                 'longitude' => 'required|numeric|min:-180|max:180',
-                'image' => 'required|string',
+                'image' => 'required',
                 'citizen_id' => 'required|exists:citizens,id'
             ]);
     
