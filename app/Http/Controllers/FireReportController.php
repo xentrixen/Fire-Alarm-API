@@ -33,10 +33,11 @@ class FireReportController extends Controller
             'image' => 'required|string',
             'citizen_id' => 'required|exists:citizens,id'
         ]);
-        return response()->json(['message' => 'Osk'], 200);
+        
         $path = uniqid() + ".png";
         
         $data = base64_decode($request->image);
+        return response()->json(['message' => 'Osk'], 200);
         Storage::disk('local')->put($path, $data);
         return response()->json(['message' => 'Ok'], 200);
 
