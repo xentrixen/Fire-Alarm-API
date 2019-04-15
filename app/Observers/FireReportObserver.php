@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\FireReport;
 use App\FirePersonnel;
 use App\Events\FireReportCreated;
+use App\Http\Resources\FireReport as FireReportResource;
 
 class FireReportObserver
 {
@@ -17,7 +18,7 @@ class FireReportObserver
     public function created(FireReport $fireReport)
     {
         // Notification::send(FirePersonnel::all(), new FireReportCreated($fireReport));
-        event(new FireReportCreated($fireReport));
+        event(new FireReportCreated(new FireReportResource($fireReport)));
     }
 
     /**
