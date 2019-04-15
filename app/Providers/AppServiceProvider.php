@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\Resource;
 use Schema;
+use App\Observers\FireReportObserver;
+use App\FireReport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,5 +29,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         Resource::withoutWrapping();
+        FireReport::observe(FireReportObserver::class);
     }
 }
