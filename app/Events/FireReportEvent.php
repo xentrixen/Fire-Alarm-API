@@ -10,18 +10,19 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class FireReportCreated implements ShouldBroadcast
+class FireReportEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $fireReport;
+    public $eventType;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($fireReport)
+    public function __construct($fireReport, $eventType)
     {
         $this->fireReport = $fireReport;
     }
@@ -38,6 +39,6 @@ class FireReportCreated implements ShouldBroadcast
 
     public function broadcastAs()
     {
-        return 'fire-report-created';
+        return 'fire-report-event';
     }
 }
