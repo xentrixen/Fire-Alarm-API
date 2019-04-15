@@ -30,6 +30,7 @@ class FireReportObserver
     public function updated(FireReport $fireReport)
     {
         // Notification::send(FirePersonnel::all(), new FireReportUpdated($fireReport));
+        event(new FireReportEvent(new FireReportResource($fireReport)), 'updated');
     }
 
     /**
@@ -40,7 +41,7 @@ class FireReportObserver
      */
     public function deleted(FireReport $fireReport)
     {
-        //
+        event(new FireReportEvent(new FireReportResource($fireReport)), 'deleted');
     }
 
     /**
