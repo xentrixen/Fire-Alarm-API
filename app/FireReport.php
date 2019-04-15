@@ -14,11 +14,11 @@ class FireReport extends Model
     ];
 
     protected $fillable = [
-        'citizen_id', 'latitude', 'longitude', 'image', 'level_of_fire'
+        'citizen_id', 'latitude', 'longitude', 'image', 'image_id', 'level_of_fire'
     ];
 
     protected $hidden = [
-        'citizen_id', 'updated_at'
+        'citizen_id', 'updated_at', 'image_id'
     ];
 
     public function setUpdatedAt($value)

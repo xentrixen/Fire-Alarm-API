@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\FireReport;
 use App\Http\Resources\FireReport as FireReportResource;
+use Cloudinary\Uploader;
 
 class FireReportHistoryController extends Controller
 {
@@ -68,7 +69,9 @@ class FireReportHistoryController extends Controller
     {
         $fireReport = FireReport::onlyTrashed()->get()->find($id);
         if($fireReport) {
+            $image_id = $fireReport->image_id;
             if($fireReport->forcedelete()) {
+                Uploader::destroy($image_id);
                 return response()->json(['message' => 'Fire report history deleted successfully'], 200);
             }
             return response()->json(['message' => 'An error has occurred'], 500);
