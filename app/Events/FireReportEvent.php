@@ -25,6 +25,7 @@ class FireReportEvent implements ShouldBroadcast
     public function __construct($fireReport, $eventType)
     {
         $this->fireReport = $fireReport;
+        $this->eventType = $eventType;
     }
 
     /**
