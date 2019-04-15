@@ -33,7 +33,6 @@ class FireReportController extends Controller
             'latitude' => 'required|numeric|min:-90|max:90',
             'longitude' => 'required|numeric|min:-180|max:180',
             'image' => 'required|string',
-            'citizen_id' => 'required|exists:citizens,id'
         ]);
         
         $image = "data:image/png;base64,".$request->image;
@@ -43,7 +42,7 @@ class FireReportController extends Controller
         $fireReport->latitude = $request->latitude;
         $fireReport->longitude = $request->longitude;
         $fireReport->image = $result["url"];
-        $fireReport->citizen_id = $request->citizen_id;
+        $fireReport->citizen_id = $request->user()->id;
 
         if($fireReport->save()) {
             return response()->json(['message' => 'Fire report created successfully'], 200);
