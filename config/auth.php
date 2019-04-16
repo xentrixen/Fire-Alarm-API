@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'fire-personnel',
+        'guard' => 'web',
         'passwords' => 'users',
     ],
 
