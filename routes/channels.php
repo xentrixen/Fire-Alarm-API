@@ -13,4 +13,4 @@
 
 Broadcast::channel('fire-reports', function() {
     return true;
-}, ['guards' => ['fire-personnel']]);
+}, ['middleware' => ['api', 'multiauth:admin,fire-personnel']]);
