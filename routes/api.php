@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
+Broadcast::routes(['middleware' => 'auth:api']);
+
 Route::group([
     'prefix' => 'auth'
 ], function () {
