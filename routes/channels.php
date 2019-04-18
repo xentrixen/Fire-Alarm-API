@@ -10,7 +10,3 @@
 | used to check if an authenticated user can listen to the channel.
 |
 */
-
-// Broadcast::channel('fire-reports', function() {
-//     return true;
-// });

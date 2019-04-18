@@ -35,7 +35,7 @@ class FireReportEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('fire-reports');
+        return new Channel('fire-reports');
     }
 
     public function broadcastAs()
