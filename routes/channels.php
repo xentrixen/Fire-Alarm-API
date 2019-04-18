@@ -11,6 +11,6 @@
 |
 */
 
-Broadcast::channel('fire-reports', function() {
-    return true;
-}, ['middleware' => ['api', 'multiauth:admin,fire-personnel']]);
+Broadcast::channel('fire-reports', function($user, $id) {
+    return $user instanceof \App\FireStation;
+});
