@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\FireReport;
-use Storage;
 use App\Http\Resources\FireReport as FireReportResource;
 use Cloudinary\Uploader;
 

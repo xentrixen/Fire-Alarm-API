@@ -24,6 +24,6 @@ class LoginHistory extends Model
     }
 
     public function citizen() {
-        return $this->belongsTo('App\Citizen');
+        return $this->belongsTo('App\Citizen')->withTrashed();
     }
 }
