@@ -14,7 +14,7 @@ class DropUniqueConstraintCitizensTable extends Migration
     public function up()
     {
         Schema::table('citizens', function(Blueprint $table) {
-            $table->dropUnique('email');
+            $table->dropUnique('citizens_email_unique');
         });
     }
 
